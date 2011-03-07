@@ -1,0 +1,9 @@
+instagram:
+  client_id: 'your instagram client_id'
+  client_secret: 'your client_secret'
+  callback: 'your callback url'
+  admin: 'your user id'
+pusher:
+  app_id: 'your app id'
+  key: 'your key'
+  secret: 'your secret'
