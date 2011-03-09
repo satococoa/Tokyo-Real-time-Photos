@@ -82,7 +82,7 @@ get '/admin' do
   client = Instagram.client(:access_token => session[:access_token])
   @subs = []
   client.subscriptions.each do |sub|
-    @subs << REDIS.get("subscription:#{sub['object_id']}")
+    @subs << JSON::parse(REDIS.get("subscription:#{sub['object_id']}"))
   end
   slim :admin, :locals => {:admin => true}
 end

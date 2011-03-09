@@ -7,12 +7,13 @@
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     var map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
-
-    pusher.bind('get_photo', function(data) {
-      console.log(data);
-    });
+    return map;
   }
   $(function(){
+    var map;
+    if (initialize != undefined && $('#map_canvas').length > 0) {
+      map = initialize();
+    }
     var pusher = new Pusher(window.pusher_key);
     pusher.bind('pusher:connection_established', function(event){
       socket_id = event.socket_id;
@@ -27,8 +28,8 @@
 
     pusher.subscribe('tokyo-realtime-photos');
 
-    if (initialize != undefined && $('#map_canvas').length > 0) {
-      initialize();
-    }
+    pusher.bind('get_photo', function(data) {
+      console.log(data);
+    });
   });
 })(jQuery);
