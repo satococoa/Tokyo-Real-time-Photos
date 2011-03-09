@@ -126,16 +126,14 @@ end
 # Instagramからのリアルタイム通知を受け取る
 post '/subscription/callback' do
   data = JSON::parse(request.body.read)
+  push_data = []
   data.each do |obj|
     data = JSON::parse(REDIS.get("subscription:#{obj['object_id']}"))
     max_timestamp = REDIS.get("subscription:#{obj['object_id']}:max_timestamp")
-    # opt = {:distance => data['radius'], :count => 5, :min_timestamp => max_timestamp}
     opt = {:distance => data['radius'], :count => 1, :min_timestamp => max_timestamp}
     images = Instagram.media_search(data['lat'], data['lng'], opt)
-    push_data = []
     images.each do |image|
       max_timestamp = REDIS.set("subscription:#{obj['object_id']}:max_timestamp", image.created_time)
-
       photo_data = {:image_id => image.id,
                     :lat => image.location.latitude,
                     :lng => image.location.longitude,
@@ -150,8 +148,8 @@ post '/subscription/callback' do
       end
       push_data << photo_data
     end
-    Pusher['tokyo-realtime-photos'].trigger('get_photo', push_data)
   end
+  Pusher['tokyo-realtime-photos'].trigger('get_photo', push_data)
   200
 end
 
