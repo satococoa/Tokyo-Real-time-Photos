@@ -3,6 +3,7 @@ require 'time'
 
 enable :sessions
 configure :development do
+  TITLE = 'Tokyo Real-time Photos - 東京の写真をリアルタイムに表示'
   config = YAML::load_file('config.yml')
   ADMIN = config['instagram']['admin']
   Instagram.configure do |conf|

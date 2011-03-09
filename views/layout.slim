@@ -3,7 +3,7 @@ html
   head
     meta charset="UTF-8"
     meta name="viewport" content="initial-scale=1.0, user-scalable=no"
-    title Tokyo Real-time Photos
+    title = TITLE
     link rel="stylesheet" href="/styles.css"
     script src="http://maps.google.com/maps/api/js?sensor=true"
     script src="http://js.pusherapp.com/1.7/pusher.min.js"
@@ -15,11 +15,14 @@ html
 
   body
     div id="header"
-      h1 Tokyo Real-time Photos
+      h1
+        Tokyo Real-time Photos by 
+        a href="http://twitter.com/satococoa" @satococoa
+      span id="twitter"
+        | <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://tokyo-realtime-photos.heroku.com/" data-text="Tokyo Real-time Photos - 東京の写真をリアルタイムに表示" data-count="horizontal" data-via="satococoa" data-lang="ja">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+      span id="facebook"
+        | <script src="http://connect.facebook.net/ja_JP/all.js#xfbml=1"></script><fb:like href="http://tokyo-realtime-photos.heroku.com/" layout="button_count" show_faces="false" width="" font=""></fb:like>
 
     div id="main"
       == yield
-
-    div id="footer"
-      a href="http://twitter.com/satococoa/" @satococoa
       

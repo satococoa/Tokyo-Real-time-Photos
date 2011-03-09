@@ -10,6 +10,9 @@
     return map;
   }
   $(function(){
+    $('#map_canvas').height($(window).height()-20);
+    $('#map_canvas').width($(window).width()-20);
+    $('#header').width($(window).width()-20);
     var map;
     if (initialize != undefined && $('#map_canvas').length > 0) {
       map = initialize();

@@ -1,11 +1,12 @@
 h1, h2, h3, h4, h5, h6 {
   font-size: 100%;
-  padding: 5px 0;
+  padding: 0;
   margin: 0;
 }
 body {
   background-color: #0c0c0c;
   color: #eee;
+  padding: 2px;
 }
 a:link,
 a:visited,
@@ -15,33 +16,16 @@ a:active {
 }
 
 #header {
-  height: 50px;
-}
-
-#user_info {
   position: absolute;
-  top: 15px;
-  right: 10px;
-  ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    list-style-position: inline;
-    li {
-      display: inline-block;
-      margin: 0 3px;
-      height: 30px;
-    }
-  }
+  bottom: 0;
+  padding: 5px;
+  // background-color: rgba(255,255,102,0.9);
+  background-color: rgba(10,10,10,0.9);
+  text-align: left;
+  vertical-align: bottom;
+  z-index: 100;
 }
-
-#map_canvas {
-  width: 100%;
-  height: 500px;
-}
-
-#footer {
-  margin: 0;
-  padding: 10px;
-  text-align: center;
+#facebook {
+  position: relative;
+  top: -4px;
 }
