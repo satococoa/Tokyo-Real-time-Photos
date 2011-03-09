@@ -131,16 +131,17 @@ post '/subscription/callback' do
     max_timestamp = REDIS.get("subscription:#{obj['object_id']}:max_timestamp")
     opt = {:distance => data['radius'], :count => 5, :min_timestamp => max_timestamp}
     images = Instagram.media_search(data['lat'], data['lng'], opt)
+    push_data = []
     images.each do |image|
       max_timestamp = REDIS.set("subscription:#{obj['object_id']}:max_timestamp", image.created_time)
-      Pusher['tokyo-realtime-photos'].trigger('get_photo',
-                                              {:lat => image.location.latitude,
-                                               :lng => image.location.longitude,
-                                               :name => image.location.name,
-                                               :thumbnail => image.images.thumbnail.url,
-                                               :image => image.images.standard_resolution.url}
-                                             )
+
+      push_data << {:lat => image.location.latitude,
+               :lng => image.location.longitude,
+               :name => image.location.name,
+               :thumbnail => image.images.thumbnail.url,
+               :image => image.images.standard_resolution.url}
     end
+    Pusher['tokyo-realtime-photos'].trigger('get_photo', push_data)
   end
   200
 end
