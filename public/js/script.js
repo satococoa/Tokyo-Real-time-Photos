@@ -36,7 +36,7 @@
         title: data.name,
         map: map
       });
-      map.setCenter(latLng);
+      // map.setCenter(latLng);
     });
   });
 })(jQuery);
