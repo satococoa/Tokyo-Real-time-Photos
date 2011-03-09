@@ -1,4 +1,6 @@
 # coding: utf-8
+require 'time'
+
 enable :sessions
 configure :development do
   config = YAML::load_file('config.yml')
@@ -8,9 +10,9 @@ configure :development do
     conf.client_secret = config['instagram']['client_secret']
   end
   REDIS = Redis.new
-  Pusher.app_id     = config['pusher']['app_id']
-  Pusher.key        = config['pusher']['key']
-  Pusher.secret     = config['pusher']['secret']
+  Pusher.app_id = config['pusher']['app_id']
+  Pusher.key    = config['pusher']['key']
+  Pusher.secret = config['pusher']['secret']
 end
 
 configure :production do
@@ -106,6 +108,7 @@ delete '/admin/subscriptions' do
   client = Instagram.client(:access_token => session[:access_token])
   client.delete_subscription :object => 'all'
   REDIS.flushdb
+  200
 end
 
 get '/forbidden' do
@@ -122,9 +125,7 @@ post '/subscription/callback' do
   data = JSON::parse(request.body.read)
   data.each do |obj|
     data = JSON::parse(REDIS.get("subscription:#{obj['object_id']}"))
-    begin
-      max_timestamp = REDIS.get("subscription:#{obj['object_id']}:max_timestamp")
-    end
+    max_timestamp = REDIS.get("subscription:#{obj['object_id']}:max_timestamp")
     opt = {:distance => data[:radius], :count => 5, :min_timestamp => max_timestamp}
     images = Instagram.media_search(data[:lat], data[:lng], opt)
     images.each do |image|
