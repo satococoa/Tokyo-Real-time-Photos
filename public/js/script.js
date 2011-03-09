@@ -31,18 +31,25 @@
 
     pusher.subscribe('tokyo-realtime-photos');
 
-    pusher.bind('get_photo', function(push_data) {
-      $.each(push_data, function() {
+    var markers;
+    var put_photos = function(data_list) {
+      $.each(data_list, function() {
         var data = this;
-        var latLng = new google.maps.LatLng(data['lat'], data['lng']);
-        var marker = new google.maps.Marker({
-          position: latLng,
-          icon: data['thumbnail'],
-          title: data['name'],
-          map: map
-        });
-        map.setCenter(latLng);
+        if (!data['image_id'] in markers) {
+          var latLng = new google.maps.LatLng(data['lat'], data['lng']);
+          var marker = new google.maps.Marker({
+            position: latLng,
+            icon: data['thumbnail'],
+            title: data['name'],
+            map: map
+          });
+          markers[data['image_id']] = marker;
+          map.setCenter(latLng);
+        }
       });
+    };
+    pusher.bind('get_photo', function(push_data) {
+      put_photos(push_data);
     });
   });
 })(jQuery);
