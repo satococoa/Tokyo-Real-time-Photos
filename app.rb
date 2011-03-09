@@ -17,6 +17,7 @@ configure :development do
 end
 
 configure :production do
+  TITLE = 'Tokyo Real-time Photos - 東京の写真をリアルタイムに表示'
   ADMIN = ENV['INSTAGRAM_ADMIN']
   Instagram.configure do |conf|
     conf.client_id = ENV['INSTAGRAM_CLIENT_ID']
