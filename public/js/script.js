@@ -37,7 +37,7 @@
     var put_photos = function(data_list) {
       $.each(data_list, function() {
         var data = this;
-        if (markers[data['image_id']] != undefined) {
+        if (!(data['image_id'] in markers)) {
           var latLng = new google.maps.LatLng(data['lat'], data['lng']);
           var marker = new google.maps.Marker({
             position: latLng,
