@@ -140,12 +140,8 @@ post '/subscription/callback' do
                     :name => image.location.name,
                     :thumbnail => image.images.thumbnail.url,
                     :image => image.images.standard_resolution.url}
-      REDIS.multi do
-        REDIS.rpush('recent', photo_data.to_json)
-        if REDIS.llen('recent').to_i > 10
-          REDIS.lpop('recent')
-        end
-      end
+      REDIS.lpush('recent', photo_data.to_json)
+      REDIS.ltrim 'recent', 0, 10
       push_data << photo_data
     end
   end
