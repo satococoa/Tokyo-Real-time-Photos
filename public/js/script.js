@@ -33,7 +33,7 @@
 
     pusher.subscribe('tokyo-realtime-photos');
 
-    var markers;
+    var markers = {};
     var put_photos = function(data_list) {
       $.each(data_list, function() {
         var data = this;
@@ -50,6 +50,7 @@
         }
       });
     };
+    put_photos(window.recent);
     pusher.bind('get_photo', function(push_data) {
       put_photos(push_data);
     });

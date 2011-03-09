@@ -156,5 +156,6 @@ end
 
 # ユーザー側
 get '/' do
+  @recent << JSON::parse(REDIS.lrange('recent', 0, 10))
   slim :index, :locals => {:admin => false}
 end
