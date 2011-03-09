@@ -1,5 +1,5 @@
 javascript:
   var pusher_key  = '#{Pusher.key}';
-  var recent = $.parseJSON('#{{@recent.to_json}}');
+  var recent = $.parseJSON('#{{@recent.map{|rec| JSON::parse(rec)}.to_json}}');
 
 div id="map_canvas"
