@@ -145,7 +145,9 @@ post '/subscription/callback' do
       push_data << photo_data
     end
   end
-  Pusher['tokyo-realtime-photos'].trigger('get_photo', push_data)
+  if ENV['PUSHER_STATUS'] == 'on'
+    Pusher['tokyo-realtime-photos'].trigger('get_photo', push_data)
+  end
   200
 end
 
