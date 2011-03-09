@@ -22,12 +22,14 @@
       socket_id = event.socket_id;
     });
 
+    /*
     // Enable pusher logging - don't include this in production
     Pusher.log = function() {
       if (window.console) window.console.log.apply(window.console, arguments);
     };
     // Flash fallback logging - don't include this in production
     WEB_SOCKET_DEBUG = true;
+    */
 
     pusher.subscribe('tokyo-realtime-photos');
 

@@ -143,7 +143,7 @@ post '/subscription/callback' do
                     :image => image.images.standard_resolution.url}
       REDIS.multi do
         REDIS.rpush('recent', photo_data.to_json)
-        if REDIS.llen('recent') > 10
+        if REDIS.llen('recent').to_i > 10
           REDIS.rpop('recent')
         end
       end
