@@ -47,6 +47,7 @@ helpers do
     session[:icon] = res.user.profile_picture
   end
   def require_admin
+    require_login
     redirect '/forbidden' unless session[:user_id].to_i == ADMIN.to_i
   end
   def logout
