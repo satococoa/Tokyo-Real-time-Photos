@@ -135,12 +135,19 @@ post '/subscription/callback' do
     images.each do |image|
       max_timestamp = REDIS.set("subscription:#{obj['object_id']}:max_timestamp", image.created_time)
 
-      push_data << {:image_id => image.id,
+      photo_data = {:image_id => image.id,
                     :lat => image.location.latitude,
                     :lng => image.location.longitude,
                     :name => image.location.name,
                     :thumbnail => image.images.thumbnail.url,
                     :image => image.images.standard_resolution.url}
+      REDIS.multi do
+        REDIS.rpush('recent', photo_data.to_json)
+        if REDIS.llen('recent') > 10
+          REDIS.rpop('recent')
+        end
+      end
+      push_data << photo_data
     end
     Pusher['tokyo-realtime-photos'].trigger('get_photo', push_data)
   end
