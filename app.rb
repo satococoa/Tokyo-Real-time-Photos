@@ -141,7 +141,7 @@ post '/subscription/callback' do
                     :thumbnail => image.images.thumbnail.url,
                     :image => image.images.standard_resolution.url}
       REDIS.lpush('recent', photo_data.to_json)
-      REDIS.ltrim 'recent', 0, 10
+      REDIS.ltrim 'recent', 0, 9
       push_data << photo_data
     end
   end
@@ -151,6 +151,6 @@ end
 
 # ユーザー側
 get '/' do
-  @recent = REDIS.lrange('recent', 0, 10)
+  @recent = REDIS.lrange('recent', 0, 9)
   slim :index, :locals => {:admin => false}
 end
