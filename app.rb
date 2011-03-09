@@ -145,7 +145,7 @@ post '/subscription/callback' do
       REDIS.multi do
         REDIS.rpush('recent', photo_data.to_json)
         if REDIS.llen('recent').to_i > 10
-          REDIS.rpop('recent')
+          REDIS.lpop('recent')
         end
       end
       push_data << photo_data
