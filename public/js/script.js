@@ -29,7 +29,7 @@
     pusher.subscribe('tokyo-realtime-photos');
 
     pusher.bind('get_photo', function(data) {
-      var latLng = new google.maps.LatLng({lat: data['lat'], lng: data['lng']});
+      var latLng = new google.maps.LatLng(data['lat'], data['lng']);
       var marker = new google.maps.Marker({
         position: latLng,
         icon: data['thumbnail'],
