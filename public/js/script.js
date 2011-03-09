@@ -29,7 +29,13 @@
     pusher.subscribe('tokyo-realtime-photos');
 
     pusher.bind('get_photo', function(data) {
-      console.log(data);
+      var latLng = new google.maps.LatLng({lat: data.lat, lng: data.lng});
+      var marker = new google.maps.Marker({
+        icon: data.thumbnail,
+        title: data.name,
+        map: map
+      });
+      map.setCenter(latLng);
     });
   });
 })(jQuery);
