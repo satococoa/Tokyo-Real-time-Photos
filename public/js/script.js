@@ -4,6 +4,10 @@
     var myOptions = {
       zoom: 13,
       center: latlng,
+      disableDefaultUI: true,
+      disableDoubleClickZoom: true,
+      scrollwheel: false,
+      mapTypeControl: true,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     var map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
