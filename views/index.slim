@@ -3,6 +3,7 @@ javascript:
   try {
     var recent = $.parseJSON('#{{@recent.map{|rec| JSON::parse(rec)}.to_json}}');
   } catch (e) {
+    console.log('invalid JSON');
   }
 
 div id="map_canvas"
