@@ -127,24 +127,25 @@ end
 
 # Instagramからのリアルタイム通知を受け取る
 post '/subscription/callback' do
-  data = JSON::parse(request.body.read)
   push_data = []
-  data.each do |obj|
-    data = JSON::parse(REDIS.get("subscription:#{obj['object_id']}"))
-    max_timestamp = REDIS.get("subscription:#{obj['object_id']}:max_timestamp")
-    opt = {:distance => data['radius'], :count => 1, :min_timestamp => max_timestamp}
-    images = Instagram.media_search(data['lat'], data['lng'], opt)
-    images.each do |image|
-      max_timestamp = REDIS.set("subscription:#{obj['object_id']}:max_timestamp", image.created_time)
-      photo_data = {:image_id => image.id,
-                    :lat => image.location.latitude,
-                    :lng => image.location.longitude,
-                    :name => h(image.location.name),
-                    :thumbnail => image.images.thumbnail.url,
-                    :image => image.images.standard_resolution.url}
-      REDIS.lpush('recent', photo_data.to_json)
-      REDIS.ltrim 'recent', 0, 9
-      push_data << photo_data
+  Instagram.process_subscription(params[:body], :signature => true) do |handler|
+    handler.on_geography_changed do |obj_id, obj|
+      data = JSON::parse(REDIS.get("subscription:#{obj_id}"))
+      max_timestamp = REDIS.get("subscription:#{obj_id}:max_timestamp")
+      opt = {:distance => data['radius'], :count => 1, :min_timestamp => max_timestamp}
+      images = Instagram.media_search(data['lat'], data['lng'], opt)
+      images.each do |image|
+        max_timestamp = REDIS.set("subscription:#{obj_id}:max_timestamp", image.created_time)
+        photo_data = {:image_id => image.id,
+                      :lat => image.location.latitude,
+                      :lng => image.location.longitude,
+                      :name => h(image.location.name),
+                      :thumbnail => image.images.thumbnail.url,
+                      :image => image.images.standard_resolution.url}
+        REDIS.lpush('recent', photo_data.to_json)
+        REDIS.ltrim 'recent', 0, 9
+        push_data << photo_data
+      end
     end
   end
   if ENV['PUSHER_STATUS'] == 'on'
