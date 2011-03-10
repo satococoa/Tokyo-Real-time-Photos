@@ -50,7 +50,9 @@
         }
       });
     };
-    put_photos(window.recent.reverse());
+    if (window.recent.length > 0) {
+      put_photos(window.recent.reverse());
+    }
     pusher.bind('get_photo', function(push_data) {
       put_photos(push_data);
     });
