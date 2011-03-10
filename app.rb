@@ -28,6 +28,8 @@ configure :production do
 end
 
 helpers do
+  include Rack::Utils
+  alias_method :h, :escape_html
   def base_url
     "#{request.scheme}://#{request.host}#{':'+request.port.to_s if request.port != 80}/"
   end
@@ -137,7 +139,7 @@ post '/subscription/callback' do
       photo_data = {:image_id => image.id,
                     :lat => image.location.latitude,
                     :lng => image.location.longitude,
-                    :name => image.location.name,
+                    :name => h(image.location.name),
                     :thumbnail => image.images.thumbnail.url,
                     :image => image.images.standard_resolution.url}
       REDIS.lpush('recent', photo_data.to_json)
