@@ -6,6 +6,9 @@
       center: latlng,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
+    $('#map_canvas').height($(window).height()-20);
+    $('#map_canvas').width($(window).width()-20);
+    $('#header').width($(window).width()-20);
     var map = new google.maps.Map(document.getElementById('map_canvas'), myOptions);
     $.each(sub, function(){
       var latLng = new google.maps.LatLng(this.lat, this.lng);
