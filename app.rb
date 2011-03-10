@@ -128,7 +128,7 @@ end
 # Instagramからのリアルタイム通知を受け取る
 post '/subscription/callback' do
   push_data = []
-  Instagram.process_subscription(params[:body], :signature => true) do |handler|
+  Instagram.process_subscription(params[:body], :signature => request['X-Hub-Signature']) do |handler|
     handler.on_geography_changed do |obj_id, obj|
       data = JSON::parse(REDIS.get("subscription:#{obj_id}"))
       max_timestamp = REDIS.get("subscription:#{obj_id}:max_timestamp")
