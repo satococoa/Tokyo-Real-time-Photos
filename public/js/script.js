@@ -43,6 +43,7 @@
       $.each(data_list, function() {
         var data = this;
         if (markers[data['image_id']] == undefined) {
+          console.log(data['thumbnail']);
           var latLng = new google.maps.LatLng(data['lat'], data['lng']);
           var thumb = new google.maps.MarkerImage({
             url: data['thumbnail'],
