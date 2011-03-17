@@ -46,7 +46,7 @@
           var latLng = new google.maps.LatLng(data['lat'], data['lng']);
           var thumb = new google.maps.MarkerImage(data['thumbnail'],
                                                   (new google.maps.Size(150, 150)),
-                                                  null, null, (new google.maps.Size(50, 50)));
+                                                  null, null, (new google.maps.Size(100, 100)));
           var marker = new google.maps.Marker({
             position: latLng,
             icon: thumb,
