@@ -57,12 +57,13 @@
           markers[data['image_id']] = marker;
           map.setCenter(latLng);
 
-          /*
           google.maps.event.addListener(marker, 'click', function(){
-            // $.colorbox({title: data['name'], href: data['standard_resolution']});
-            $.colorbox({title: data['name'], href: data['thumbnail']});
+            $.colorbox({
+              transition: 'fade',
+              title: data['name'],
+              href: data['image']
+            });
           });
-          */
         }
       });
     };
