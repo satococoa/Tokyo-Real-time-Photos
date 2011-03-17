@@ -38,16 +38,23 @@
     pusher.subscribe('tokyo-realtime-photos');
 
     var markers = {};
+    var zIndex = 0;
     var put_photos = function(data_list) {
       $.each(data_list, function() {
         var data = this;
         if (markers[data['image_id']] == undefined) {
           var latLng = new google.maps.LatLng(data['lat'], data['lng']);
+          var thumb = new google.maps.MarkerImage({
+            url: data['thumbnail'],
+            size: new google.maps.Size({width: 150, height: 150}),
+            scaledSize: new google.maps.Size({width: 50, height: 50})
+          });
           var marker = new google.maps.Marker({
             position: latLng,
-            icon: data['thumbnail'],
+            icon: thumb,
             title: data['name'],
-            map: map
+            map: map,
+            zIndex: zIndex++
           });
           markers[data['image_id']] = marker;
           map.setCenter(latLng);
