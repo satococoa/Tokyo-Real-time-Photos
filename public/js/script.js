@@ -60,7 +60,9 @@
           google.maps.event.addListener(marker, 'click', function(){
             $.colorbox({
               title: data['name'],
-              href: data['image']
+              href: data['image'],
+              width: '60%',
+              height: '60%'
             });
           });
         }
