@@ -61,7 +61,6 @@
             $.colorbox({
               title: data['name'],
               href: data['image'],
-              width: '60%',
               height: '60%',
               initialWidth: '60%',
               initialHeight: '60%'
