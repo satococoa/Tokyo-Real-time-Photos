@@ -1,2 +1,4 @@
 config.yml
 .sass-cache
+.bundle
+bundle
