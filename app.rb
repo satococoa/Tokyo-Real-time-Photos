@@ -104,7 +104,7 @@ post '/admin/subscriptions' do
                                    :callback_url => subscript_url)
   data = {:lat => params[:lat], :lng => params[:lng], :radius => 5000}
   REDIS.set("subscription:#{obj['object_id']}", data.to_json)
-  obj
+  obj.to_json
 end
 
 # delete all subscliptions
@@ -134,7 +134,7 @@ post '/subscription/callback' do
       max_timestamp = REDIS.get("subscription:#{obj_id}:max_timestamp")
       opt = {:distance => data['radius'], :count => 1, :min_timestamp => max_timestamp}
       images = Instagram.media_search(data['lat'], data['lng'], opt)
-      images.each do |image|
+      images['data'].each do |image|
         max_timestamp = REDIS.set("subscription:#{obj_id}:max_timestamp", image.created_time)
         photo_data = {:image_id => image.id,
                       :lat => image.location.latitude,
