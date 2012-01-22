@@ -81,7 +81,7 @@ get '/styles.css' do
 end
 
 # 管理側
-get '/admin' do
+get '/admin/?' do
   require_admin
   client = Instagram.client(:access_token => session[:access_token])
   @subs = []
