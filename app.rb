@@ -137,8 +137,8 @@ post '/subscription/callback' do
       data = JSON::parse(REDIS.get("subscription:#{obj_id}"))
       max_timestamp = REDIS.get("subscription:#{obj_id}:max_timestamp")
       opt = {:distance => data['radius'], :count => 1, :min_timestamp => max_timestamp}
-      images = Instagram.media_search(data['lat'], data['lng'], opt).tapp
-      images['data'].each do |image|
+      images = Instagram.media_search(data['lat'], data['lng'], opt)
+      images.each do |image|
         max_timestamp = REDIS.set("subscription:#{obj_id}:max_timestamp", image.created_time)
         photo_data = {:image_id => image.id,
                       :lat => image.location.latitude,
