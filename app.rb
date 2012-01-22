@@ -1,7 +1,10 @@
 # coding: utf-8
 require 'time'
 
-enable :sessions
+configure do
+  enable :sessions
+end
+
 configure :development do
   TITLE = 'Tokyo Real-time Photos - 東京の写真をリアルタイムに表示'
   config = YAML::load_file('config.yml')
@@ -86,7 +89,8 @@ get '/admin' do
   client = Instagram.client(:access_token => session[:access_token])
   @subs = []
   client.subscriptions.each do |sub|
-    @subs << JSON::parse(REDIS.get("subscription:#{sub['object_id']}"))
+    data = REDIS.get("subscription:#{sub['object_id']}")
+    @subs << JSON::parse(data) unless data.nil?
   end
   slim :admin, :locals => {:admin => true}
 end
@@ -134,7 +138,7 @@ post '/subscription/callback' do
       max_timestamp = REDIS.get("subscription:#{obj_id}:max_timestamp")
       opt = {:distance => data['radius'], :count => 1, :min_timestamp => max_timestamp}
       images = Instagram.media_search(data['lat'], data['lng'], opt)
-      images.each do |image|
+      images['data'].each do |image|
         max_timestamp = REDIS.set("subscription:#{obj_id}:max_timestamp", image.created_time)
         photo_data = {:image_id => image.id,
                       :lat => image.location.latitude,
